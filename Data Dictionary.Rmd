@@ -1,0 +1,40 @@
+---
+title: "Data Dictionary"
+author: "Kendra Swanson"
+date: "4/19/2018"
+output: html_document
+---
+
+
+```{r}
+library(fivethirtyeight)
+library(dplyr)
+library(mosaic)
+data(police_killings)
+```
+
+Our data is all contained in the police_killings data set.
+
+```{r}
+str(police_killings)
+```
+
+This data set contains 467 observations of 34 variables. Each observation corresponds to a single victim of police killings in 2015. The variables include both information about the individual, and information about the location of the killing, down to the street address and latitude and longitude of where the killing occurred. The data also includes information on the city and county in which the killing occurred, including population, income, and college graduation rate.
+
+
+### Favstats on numerical variables
+
+```{r}
+police_killings <- police_killings %>%
+  filter(!is.na(age))
+favstats(~age, data = police_killings)
+```
+
+Four victims are missing data for age, so I ran a filter to eliminate those rows.
+
+
+```{r}
+favstats(~county_income, data = police_killings)
+```
+
+
