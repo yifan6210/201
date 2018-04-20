@@ -1,0 +1,30 @@
+---
+title: "Revised Project Proposal"
+author: "Yifan Ma, Kendra Swanson"
+date: "4/8/2018"
+output: oilabs::lab_report
+---
+
+## Group Members: 
+Yifan Ma, Kendra Swanson
+
+### Title: Police Violence Across the United States
+
+## Purpose: 
+To examine the correlation between police killings (in 2015) by location, size of police force within the state/city, and population density of each state/city that the killing took place in. We will also investigate demographic data on race in these locations to determine both the demographics of civilians which are more highly targeted, of the police who target them.
+
+## Data: 
+We will be using data from the fivethirtyeight package in R that deals with the police force in the United States. The names of the data sets are police_deaths, police_killings, and police_locals. The data in police_deaths describes deaths of police officers on the job. The data in police_killings describes the deaths of civilians at the hands of police in 2015. The data in police_locals describes the population of police officers in several cities.
+
+## Population: 
+Each observational units in police_killings data set is a person who has been killed by police in 2015. Each unit in police_deaths is a police officer who has been killed in 1791-2016. Each unit in police_locals is a city in the USA.
+
+## Response Variable:
+- Number of police killings by state/city in 2015 (numeric)
+
+## Explanatory Variables:
+- Population density of each state/city (numeric)
+- Size of police force within the state (numeric)
+- Police per capita (numeric)
+- Demographic of police force in the state/city (numeric, presented by the distribution of race/ethnicity across the police force. Ex: white: 50%, black 30% etc…)
+- Demographic of the victims of police killings (categorical: Asian/Pacific Islander, Black, Hispanic/Latino, White) 
