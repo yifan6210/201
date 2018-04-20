@@ -23,8 +23,9 @@ Each observational units in police_killings data set is a person who has been ki
 - Number of police killings by state/city in 2015 (numeric)
 
 ## Explanatory Variables:
-- Population density of each state/city (numeric)
-- Size of police force within the state (numeric)
-- Police per capita (numeric)
-- Demographic of police force in the state/city (numeric, presented by the distribution of race/ethnicity across the police force. Ex: white: 50%, black 30% etc…)
-- Demographic of the victims of police killings (categorical: Asian/Pacific Islander, Black, Hispanic/Latino, White) 
+- County income (numeric)
+- Age(numeric)
+- Gender(categorical)
+- Armed(categorical)
+- Demographic of the victims of police killings (categorical: Asian/Pacific Islander, Black, Hispanic/Latino, White)
+

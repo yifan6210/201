@@ -38,3 +38,30 @@ favstats(~county_income, data = police_killings)
 ```
 
 
+
+```{r}
+police_killings %>%
+  group_by(gender) %>%
+  tally(sort = TRUE)
+```
+
+```{r}
+police_killings <- police_killings %>%
+  filter(!is.na(armed))
+
+police_killings %>%
+  group_by(armed) %>%
+  tally(sort = TRUE)
+```
+
+```{r}
+police_killings <- police_killings %>%
+  filter(!is.na(raceethnicity))
+
+police_killings %>%
+  group_by(raceethnicity) %>%
+  tally(sort = TRUE)
+```
+
+
+
