@@ -7,3 +7,16 @@ output:
     code_folding: hide
     df_print: paged 
 ---
+
+```{r}
+library(fivethirtyeight)
+library(dplyr)
+library(mosaic)
+View(police_killings)
+```
+
+
+```{r}
+
+```
+
