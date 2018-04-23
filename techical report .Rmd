@@ -16,6 +16,7 @@ library(mosaic)
 library(maps)
 library(mapdata)
 View(police_killings)
+police_killings_2015 <- read.csv("the-counted-2015.csv")
 ```
 
 ```{r}
@@ -84,4 +85,32 @@ mod <- lm( ~county_income + age + gender + armed + raceethnicity )
 ```{r}
 
 ```
+
+
+
+
+
+
+
+### Distribution of county income for 
+
+```{r}
+police_killings %>%
+  ggplot(aes(x = county_income)) + geom_histogram(bins = 30)
+```
+
+```{r}
+favstats(~county_income, data = police_killings)
+```
+
+Median income for the county in which police killings occurred in 2015 was $50,877, while median household income in 2015 for all of the USA was $56,516. (source: https://www.census.gov/library/publications/2016/demo/p60-256.html)
+
+- Is this statistically significant?
+- comp_income = the ratio of the median household income in the tract (specific neighborhood?) in which the killing happened, to the median household income of the county as a whole --> examine this?
+
+```{r}
+
+```
+
+
 
