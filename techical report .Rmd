@@ -10,11 +10,76 @@ output:
 
 ```{r}
 library(fivethirtyeight)
+library(tidyverse)
 library(dplyr)
 library(mosaic)
+library(maps)
+library(mapdata)
 View(police_killings)
 ```
 
+```{r}
+c <- police_killings %>%
+  group_by(state) %>%
+  summarise(sum = n())%>%
+  arrange(desc(sum))
+# need divide by population 
+
+
+library(readxl)
+state_a <- read_excel("state_a.xls")
+states <- map_data("state")
+states <- states %>%
+  left_join(state_a, by = c("region" = "State")) %>%
+  full_join(c, by = c("Abreviation" = "state"))
+
+base <- ggplot(data = states) + 
+  geom_polygon(aes(x = long, y = lat, group = group, fill = sum), color = "white")+
+  scale_fill_gradient(low = "grey", high = "red")+
+  theme(legend.position="right")+
+  theme_void()+
+  coord_fixed(1.3)
+
+base
+```
+
+
+```{r}
+a <- police_killings %>%
+  group_by(armed, state) %>%
+  summarise(s = n()) %>%
+  arrange(desc(s)) 
+
+```
+
+```{r}
+g <- police_killings %>%
+  group_by(gender, state) %>%
+  summarise(s = n()) %>%
+  arrange(desc(s)) 
+```
+
+```{r}
+a_s1 <- police_killings %>%
+  group_by(age) %>%
+  summarise(s = n()) %>%
+  arrange(desc(s)) 
+
+ggplot(a_s1, aes(x = age, y = s)) +
+  geom_line()
+  
+
+a_s2 <- police_killings %>%
+  group_by(age, state) %>%
+  summarise(s = n()) %>%
+  arrange(desc(s)) 
+
+```
+
+
+```{r}
+mod <- lm( ~county_income + age + gender + armed + raceethnicity )
+```
 
 ```{r}
 
