@@ -1,0 +1,9 @@
+---
+title: "Technical report"
+author: "Yifan Ma & Kendra Swanson"
+date: "April 23, 2018"
+output: 
+  html_document:
+    code_folding: hide
+    df_print: paged 
+---
