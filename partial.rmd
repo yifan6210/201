@@ -11,7 +11,7 @@ library(fivethirtyeight)
 library(tidyverse)
 library(dplyr)
 library(mosaic)
-View(police_killings)
+data(police_killings)
 ```
 
 
