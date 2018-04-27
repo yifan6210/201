@@ -46,7 +46,7 @@ ggplot(county_data, aes(x = prop_n_deaths)) +
 Then you can fit some linear models, like this
 
 ```{r}
-a_model_for_you <- lm(prop_n_deaths ~ n_male + n_white + avg_pov + avg_urate + avg_college, data = county_data)
+a_model_for_you <- lm(prop_n_deaths ~ n_male +  n_white + avg_pov + avg_urate + avg_college, data = county_data)
 
 summary(a_model_for_you)
 ```
@@ -60,36 +60,29 @@ plot(a_model_for_you)
 Make some bivariate scatterplots here. 
 
 ```{r}
-
-```
-
-
-
-```{r}
-# z <- police_killings %>%
-#   group_by(county_id) %>%
-#   summarise(nod = n()) 
-# 
-# a <- police_killings %>%
-#   select(county_income, county_id) %>%
-#   right_join(z, by = "county_id")
-# 
-# c <- police_killings %>%
-#   select(raceethnicity, county_id)%>%
-#   filter(!is.na(raceethnicity)) %>%
-#   mutate(w = ifelse(raceethnicity == "White", 1,0))%>%
-#   group_by(county_id) %>%
-#   summarise(n_w = sum(w))
+#ggplot(county_data, aes(x = n_male, y = prop_n_deaths))+
+ #        geom_point(position = "identity")
 ```
 
 ```{r}
-# base <- police_killings %>%
-#   select(county_id, gender) %>%
-#   mutate(g = ifelse(gender == "Male", 1, 0)) %>%
-#   group_by(county_id)%>%
-#   summarise(n_g = sum(g)) %>%
-#   right_join(a, by = "county_id") %>%
-#   mutate(percent_m = n_g/nod) %>%
-#   right_join(c, by = "county_id") %>%
-#   mutate(percent_w = n_w/nod)
+ggplot(county_data, aes(x = n_white, y = prop_n_deaths))+
+         geom_point(position = "identity")
+```
+
+```{r}
+ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths))+
+         geom_point()+
+         geom_smooth()
+```
+
+```{r}
+ggplot(county_data, aes(x =  avg_urate, y = prop_n_deaths))+
+         geom_point()+
+         geom_smooth()
+```
+
+```{r}
+#ggplot(county_data, aes(x =  avg_college, y = prop_n_deaths))+
+ #        geom_point(position = "identity")
+```
 
