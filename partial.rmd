@@ -80,7 +80,7 @@ outliers <- county_data %>%
   head(10)
 ```
 
-### Comparison of race distribution of victims
+### Comparison of race distribution of victims 
 
 ```{r}
 county_data <- county_data %>%
