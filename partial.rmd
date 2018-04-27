@@ -46,7 +46,7 @@ ggplot(county_data, aes(x = prop_n_deaths)) +
 Then you can fit some linear models, like this
 
 ```{r}
-a_model_for_you <- lm(prop_n_deaths ~ n_male +  n_white + avg_pov + avg_urate + avg_college, data = county_data)
+a_model_for_you <- lm(prop_n_deaths ~ n_male +  percent_white + avg_pov + avg_urate + avg_college, data = county_data)
 
 summary(a_model_for_you)
 ```
@@ -66,8 +66,22 @@ Make some bivariate scatterplots here.
 
 ```{r}
 ggplot(county_data, aes(x = n_white, y = prop_n_deaths))+
-         geom_point(position = "identity")
+         geom_scatter(stat = "identity")
 ```
+
+### Which county are the outliers
+
+```{r}
+outliers <- county_data %>%
+  left_join(police_killings, by = "county_id") %>%
+  select(county_id:percent_white, city, state)%>%
+  mutate (o = percent_white/prop_n_deaths) %>%
+  arrange (desc(o))%>%
+  head(10)
+```
+
+### two proportion test
+
 
 ```{r}
 ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths))+
