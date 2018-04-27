@@ -64,13 +64,31 @@ Make some bivariate scatterplots here.
  #        geom_point(position = "identity")
 ```
 
+
+
+### Investigating percent_white
+
 ```{r}
-ggplot(county_data, aes(x = n_white, y = prop_n_deaths))+
-         geom_point(position = "identity")
+county_data <- county_data %>%
+  mutate(majority_white_deaths = ifelse(percent_white >= 0.5, 1, 0))
 ```
 
 ```{r}
-ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths))+
+ggplot(data = county_data, aes(x = majority_white_deaths, y = prop_n_deaths)) + geom_boxplot(aes(group = majority_white_deaths))
+```
+
+This graph shows the deaths per 1000 people for counties in which greater than or equal to 50% of the people killed were white, compared to counties in which greater than 50% of the people killed were not.
+
+- find confidence interval for difference in means
+
+```{r}
+
+```
+
+
+
+```{r}
+ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths, color = avg_urate))+
          geom_point()+
          geom_smooth()
 ```
