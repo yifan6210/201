@@ -63,32 +63,4 @@ Make some bivariate scatterplots here.
 ```
 
 
-
-```{r}
-# z <- police_killings %>%
-#   group_by(county_id) %>%
-#   summarise(nod = n()) 
-# 
-# a <- police_killings %>%
-#   select(county_income, county_id) %>%
-#   right_join(z, by = "county_id")
-# 
-# c <- police_killings %>%
-#   select(raceethnicity, county_id)%>%
-#   filter(!is.na(raceethnicity)) %>%
-#   mutate(w = ifelse(raceethnicity == "White", 1,0))%>%
-#   group_by(county_id) %>%
-#   summarise(n_w = sum(w))
-```
-
-```{r}
-# base <- police_killings %>%
-#   select(county_id, gender) %>%
-#   mutate(g = ifelse(gender == "Male", 1, 0)) %>%
-#   group_by(county_id)%>%
-#   summarise(n_g = sum(g)) %>%
-#   right_join(a, by = "county_id") %>%
-#   mutate(percent_m = n_g/nod) %>%
-#   right_join(c, by = "county_id") %>%
-#   mutate(percent_w = n_w/nod)
-
+z
