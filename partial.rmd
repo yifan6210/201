@@ -1,0 +1,91 @@
+---
+title: "partial"
+output: html_document
+---
+
+```{r}
+library(fivethirtyeight)
+library(tidyverse)
+library(dplyr)
+library(mosaic)
+View(police_killings)
+```
+
+
+# Analysis by County
+Kendra and Yifan, something like this! Where every row is a county. Use this data for your analysis. 
+
+Maybe add some more vairbales now that you see how it works. 
+
+```{r}
+county_data <- police_killings %>%
+  mutate(g = ifelse(gender == "Male", 1, 0),
+         w = ifelse(raceethnicity == "White", 1,0)) %>%
+  group_by(county_id) %>%
+  summarise(nod = n(),
+            tot_pop = sum(pop, na.rm=TRUE), 
+            n_g = sum(g),
+            n_w = sum(w, na.rm=TRUE),
+            avg_pov = mean(pov, na.rm=TRUE),
+            avg_urate = mean(urate, na.rm=TRUE),
+            avg_college = mean(college, na.rm=TRUE)) %>%
+  mutate(percent_m = n_g/nod, 
+         prop_nod = nod/tot_pop*1000,
+         percent_w = n_w/nod)
+```
+
+```{r}
+ggplot(county_data, aes(x = prop_nod)) +
+  geom_histogram()
+```
+
+Then you can fit some linear models, like this
+
+```{r}
+a_model_for_you <- lm(prop_nod ~ n_g + n_w + avg_pov + avg_urate + avg_college, data = county_data)
+
+summary(a_model_for_you)
+```
+
+diagnostics
+
+```{r}
+plot(a_model_for_you)
+```
+
+Make some bivariate scatterplots here. 
+
+```{r}
+
+```
+
+
+
+```{r}
+# z <- police_killings %>%
+#   group_by(county_id) %>%
+#   summarise(nod = n()) 
+# 
+# a <- police_killings %>%
+#   select(county_income, county_id) %>%
+#   right_join(z, by = "county_id")
+# 
+# c <- police_killings %>%
+#   select(raceethnicity, county_id)%>%
+#   filter(!is.na(raceethnicity)) %>%
+#   mutate(w = ifelse(raceethnicity == "White", 1,0))%>%
+#   group_by(county_id) %>%
+#   summarise(n_w = sum(w))
+```
+
+```{r}
+# base <- police_killings %>%
+#   select(county_id, gender) %>%
+#   mutate(g = ifelse(gender == "Male", 1, 0)) %>%
+#   group_by(county_id)%>%
+#   summarise(n_g = sum(g)) %>%
+#   right_join(a, by = "county_id") %>%
+#   mutate(percent_m = n_g/nod) %>%
+#   right_join(c, by = "county_id") %>%
+#   mutate(percent_w = n_w/nod)
+
