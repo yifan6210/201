@@ -18,7 +18,7 @@ View(police_killings)
 # Analysis by County
 Kendra and Yifan, something like this! Where every row is a county. Use this data for your analysis. 
 
-Maybe add some more vairbales now that you see how it works. 
+Maybe add some more vairbales now that you see how it works.
 
 ```{r}
 county_data <- police_killings %>%
@@ -80,6 +80,7 @@ outliers <- county_data %>%
   head(10)
 ```
 
+
 ### Comparison of race distribution of victims 
 
 ```{r}
@@ -94,7 +95,6 @@ ggplot(data = county_data, aes(x = majority_white_deaths, y = prop_n_deaths)) + 
 This graph shows the deaths per 1000 people for counties in which greater than or equal to 50% of the people killed were white, compared to counties in which greater than 50% of the people killed were not.
 
 - find confidence interval for difference in means
-
 
 ```{r}
 ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths))+
