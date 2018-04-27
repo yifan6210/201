@@ -22,27 +22,28 @@ county_data <- police_killings %>%
   mutate(g = ifelse(gender == "Male", 1, 0),
          w = ifelse(raceethnicity == "White", 1,0)) %>%
   group_by(county_id) %>%
-  summarise(nod = n(),
+  summarise(n_deaths = n(),
             tot_pop = sum(pop, na.rm=TRUE), 
-            n_g = sum(g),
-            n_w = sum(w, na.rm=TRUE),
+            n_male = sum(g),
+            n_white = sum(w, na.rm=TRUE),
             avg_pov = mean(pov, na.rm=TRUE),
             avg_urate = mean(urate, na.rm=TRUE),
             avg_college = mean(college, na.rm=TRUE)) %>%
-  mutate(percent_m = n_g/nod, 
-         prop_nod = nod/tot_pop*1000,
-         percent_w = n_w/nod)
+  mutate(percent_m = n_male/n_deaths, 
+         prop_n_deaths = n_deaths/tot_pop*1000,
+         percent_white = n_white/n_deaths)
+county_data
 ```
 
 ```{r}
-ggplot(county_data, aes(x = prop_nod)) +
+ggplot(county_data, aes(x = prop_n_deaths)) +
   geom_histogram()
 ```
 
 Then you can fit some linear models, like this
 
 ```{r}
-a_model_for_you <- lm(prop_nod ~ n_g + n_w + avg_pov + avg_urate + avg_college, data = county_data)
+a_model_for_you <- lm(prop_n_deaths ~ n_male + n_white + avg_pov + avg_urate + avg_college, data = county_data)
 
 summary(a_model_for_you)
 ```
