@@ -97,6 +97,6 @@ ggplot(county_data, aes(x =  avg_urate, y = prop_n_deaths))+
 
 ```{r}
 #ggplot(county_data, aes(x =  avg_college, y = prop_n_deaths))+
- #        geom_point(position = "identity")
+       geom_point(position = "identity")
 ```
 
