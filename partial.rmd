@@ -46,7 +46,7 @@ ggplot(county_data, aes(x = prop_n_deaths)) +
 Then you can fit some linear models, like this
 
 ```{r}
-a_model_for_you <- lm(prop_n_deaths ~ n_male + n_white + avg_pov + avg_urate + avg_college, data = county_data)
+a_model_for_you <- lm(prop_n_deaths ~ n_male +  n_white + avg_pov + avg_urate + avg_college, data = county_data)
 
 summary(a_model_for_you)
 ```
@@ -60,8 +60,29 @@ plot(a_model_for_you)
 Make some bivariate scatterplots here. 
 
 ```{r}
-
+#ggplot(county_data, aes(x = n_male, y = prop_n_deaths))+
+ #        geom_point(position = "identity")
 ```
 
+```{r}
+ggplot(county_data, aes(x = n_white, y = prop_n_deaths))+
+         geom_point(position = "identity")
+```
 
-z
+```{r}
+ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths))+
+         geom_point()+
+         geom_smooth()
+```
+
+```{r}
+ggplot(county_data, aes(x =  avg_urate, y = prop_n_deaths))+
+         geom_point()+
+         geom_smooth()
+```
+
+```{r}
+#ggplot(county_data, aes(x =  avg_college, y = prop_n_deaths))+
+ #        geom_point(position = "identity")
+```
+
