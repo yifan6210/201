@@ -6,12 +6,13 @@ output: html_document:
     code_folding: hide
 ---
 
-```{r}
+```{r, include = FALSE}
 library(fivethirtyeight)
 library(tidyverse)
 library(dplyr)
 library(mosaic)
-View(police_killings)
+library(ggplot2)
+data(police_killings)
 ```
 
 
@@ -35,7 +36,7 @@ county_data <- police_killings %>%
   mutate(percent_m = n_male/n_deaths, 
          prop_n_deaths = n_deaths/tot_pop*1000,
          percent_white = n_white/n_deaths)
-county_data
+head(county_data, 10)
 ```
 
 ```{r}
@@ -66,7 +67,7 @@ Make some bivariate scatterplots here.
 
 ```{r}
 ggplot(county_data, aes(x = n_white, y = prop_n_deaths))+
-         geom_scatter(stat = "identity")
+         geom_point(stat = "identity")
 ```
 
 ### Which county are the outliers
@@ -92,9 +93,18 @@ county_data <- county_data %>%
 ggplot(data = county_data, aes(x = majority_white_deaths, y = prop_n_deaths)) + geom_boxplot(aes(group = majority_white_deaths))
 ```
  
-This graph shows the deaths per 1000 people for counties in which greater than or equal to 50% of the people killed were white, compared to counties in which greater than 50% of the people killed were not.
+This graph shows the deaths per 1000 people for counties in which greater than or equal to 50% of the people killed were white, compared to counties in which greater than 50% of the people killed were not. We counted counties in which white and nonwhite people were killed in equal amounts as majority_white_deaths = true.
 
-- find confidence interval for difference in means
+# Find confidence interval for difference in means
+
+```{r}
+t.test(prop_n_deaths ~ majority_white_deaths, data = county_data)
+```
+
+We are 95% confident that in counties where the majority of police killings happened to non-white individuals, the mean deaths per thousand residents of those counties is between 1.6%  and 9.2% higher than the mean deaths per thousand in counties where the majority of police killings happened to white individuals.
+
+
+
 
 ```{r}
 ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths))+
