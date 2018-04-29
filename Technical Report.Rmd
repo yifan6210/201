@@ -1,0 +1,27 @@
+---
+title: "Technical Report"
+author: "Kendra Swanson, Yifan Ma"
+date: "4/28/2018"
+output: html_document
+---
+
+
+### Abstract
+
+  Using data on killings committed by police in the first half of 2015, we studied trends in demographic information about the victim and the location in which the killing took place. We grouped the data by the county in which the killing took place. We then normalized the number of deaths by dividing deaths by the sum of the population of the tracts in which the killings took place; we multipled this number by 1000, and the resulting values represent the sample killings by police per thousand people in that county. We studied the correlation of deaths per thousand with factors including poverty rate of the county, race of the victims, number of victims who were male, average college graduation rate, and average unemployment rate. We discovered that poverty statistics for the county and race of the victim does have a statistically significant impact on predicted deaths per thousand in that county at the hands of police.
+
+
+### Introduction
+  
+  In 2014, the killings of Michael Brown and Eric Garner at the hands of police officers brought conversation about police violence into the national spotlight. Since then, there has been an increased interest in answering questions about the use of deadly force by police officers, as well as about racial bias in policing. Our question is, what demographic factors are correlated with who was killed by police in the first six months of 2015? We created a regression model which mapped deaths per thousand in a county to number of those victims who were men, percentage of those victims who were white, average poverty rate for the county, average unemployment rate, and average college graduation rate.
+  We discovered that the strongest correlation existed between poverty rate and deaths per thousand. As poverty rate increases in a county, so do the deaths at the hands of police; the amount of variance explained by this value, however, is low. We also investigated patterns in race of the victims, and found certain statistically significant values that suggested the killings of non-white individuals in greater density than white individuals. Finally, we investigated a number of outlying counties with uncommonly high death rates, and found ____.
+  Our analysis confirms some of the conversation around race and class bias in the police force. However, it should be noted that most of the variation in data is not explained by these factors. 
+  
+
+### The Data
+  
+  The data we used originates from a combination of census data and a set of data published in The Guardian called The Counted. The Counted is a crowdsourced record seeking to understand the full scope of police violence in the United States. Its cases are individuals who died at the hands of police officers, and it records the race, gender, and age of the individual, the location of the death, whether the victim was armed, and other case-specific information. Census data was used to determine the poverty rate in the area in which the death took place, as well as the unemployment rate, college graduation rate, and many other factors. The joining of this data was performed by fivethirtyeight.com.
+  We further modified the data to group by county. The cases we used were counties in which police killings took place in the first six months of 2015. We used population data to estimate a sample value for deaths per thousand in each of these counties, and attempted to create a model predicting this value using the other census and case-specific variables.
+
+
+
