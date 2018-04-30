@@ -112,11 +112,12 @@ outliers3 <- county_data %>%
   select(prop_n_deaths, avg_pov, avg_urate, city, state)%>%
   arrange (desc(prop_n_deaths))%>%
   head(5)
-
+outliers2
+outliers3
 ```
 
 Highest poverty rate: a county in Charlotte NC.
-Highest death per thousand: Fort Pierce in FL, with average poverty rate of 54.2.
+Highest death per thousand: a county in Fort Pierce, FL, with average poverty rate of 54.2. Fort Pierce have 30.2% of the population below the poverty line as a city.
 
 ```{r}
 ggplot(county_data, aes(x =  avg_urate, y = prop_n_deaths))+
