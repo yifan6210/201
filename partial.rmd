@@ -1,9 +1,8 @@
 ---
 title: "Analysis by County"
-author: ""
+author: "Kendra Swanson, Yifan Ma"
 date: "4/27/2018"
-output: html_document:
-    code_folding: hide
+output: html_document
 ---
 
 ```{r, include = FALSE}
@@ -34,30 +33,19 @@ head(county_data, 10)
 ```
 
 ```{r}
-ggplot(county_data, aes(x = prop_n_deaths)) +
-  geom_histogram()
-```
-
-Then you can fit some linear models, like this
-
-```{r}
-a_model_for_you <- lm(prop_n_deaths ~ n_male +  percent_white + avg_pov + avg_urate + avg_college, data = county_data)
+a_model_for_you <- lm(prop_n_deaths ~ percent_m + percent_white + avg_pov + avg_urate + avg_college, data = county_data)
 
 summary(a_model_for_you)
 ```
 
-diagnostics
+### Diagnostics
 
 ```{r}
 plot(a_model_for_you)
 ```
 
-Make some bivariate scatterplots here. 
+### Bivariate scatterplots
 
-```{r}
-#ggplot(county_data, aes(x = n_male, y = prop_n_deaths))+
- #        geom_point(position = "identity")
-```
 
 ```{r}
 ggplot(county_data, aes(x = n_white, y = prop_n_deaths))+
@@ -98,22 +86,56 @@ t.test(prop_n_deaths ~ majority_white_deaths, data = county_data)
 We are 95% confident that in counties where the majority of police killings happened to non-white individuals, the mean deaths per thousand residents of those counties is between 1.6%  and 9.2% higher than the mean deaths per thousand in counties where the majority of police killings happened to white individuals.
 
 
+```{r}
+ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths, color = avg_urate))+
+         geom_point()+
+         geom_lm()
 
+mod_p <- lm(prop_n_deaths~avg_pov, data = county_data)
+summary(mod_p)
+confint(mod_p)
+```
+
+We found that for every one percent increase in average poverty rate in the county, we would predict a 4 percent increase in death per thousand people in that county, holding all other variable constant.
+
+We are 95% confident that the true slope value of death per thousand and poverty rate is between .003 and .006. 
 
 ```{r}
-ggplot(county_data, aes(x = avg_pov, y = prop_n_deaths))+
-         geom_point()+
-         geom_smooth()
+outliers2 <- county_data %>%
+  left_join(police_killings, by = "county_id") %>%
+  select(avg_pov, avg_urate, city, state)%>%
+  arrange (desc(avg_pov))%>%
+  head(5)
+
+outliers3 <- county_data %>%
+  left_join(police_killings, by = "county_id") %>%
+  select(prop_n_deaths, avg_pov, avg_urate, city, state)%>%
+  arrange (desc(prop_n_deaths))%>%
+  head(5)
+
 ```
+
+Highest poverty rate: a county in Charlotte NC.
+Highest death per thousand: Fort Pierce in FL, with average poverty rate of 54.2.
 
 ```{r}
 ggplot(county_data, aes(x =  avg_urate, y = prop_n_deaths))+
          geom_point()+
-         geom_smooth()
+         geom_lm()
+
+mod_u <- lm(prop_n_deaths~avg_urate, data = county_data)
+summary(mod_u)
+confint(mod_u)
 ```
+
+We found that every one percent increase in unemployment rate in the county, we would predict a 72 percent increase in death per thousand people in that county, holding all other variable constant.
+
+We are 95% confident that the true slope value of death per thousand and unemployment rate is between .46 and .97. 
 
 ```{r}
-#ggplot(county_data, aes(x =  avg_college, y = prop_n_deaths))+
-       geom_point(position = "identity")
+mod_pu <- lm(avg_pov~avg_urate, data = county_data)
+summary(mod_u)
+confint(mod_u)
 ```
 
+Average umployment rate is postively correlated to average poverty rate. The result is also signifant, p < 0.05. 
