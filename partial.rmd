@@ -15,12 +15,6 @@ library(ggplot2)
 data(police_killings)
 ```
 
-
-# Analysis by County
-Kendra and Yifan, something like this! Where every row is a county. Use this data for your analysis. 
-
-Maybe add some more vairbales now that you see how it works.
-
 ```{r}
 county_data <- police_killings %>%
   mutate(g = ifelse(gender == "Male", 1, 0),
