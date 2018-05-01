@@ -38,6 +38,25 @@ a_model_for_you <- lm(prop_n_deaths ~ percent_m + percent_white + avg_pov + avg_
 summary(a_model_for_you)
 ```
 
+```{r}
+a_model_for_you2 <- lm(prop_n_deaths ~avg_pov + avg_urate, data = county_data)
+
+summary(a_model_for_you2)
+```
+
+```{r}
+a_model_for_you3 <- lm(prop_n_deaths ~ percent_m + percent_white + avg_urate + avg_college, data = county_data)
+
+summary(a_model_for_you3)
+```
+
+```{r}
+a_model_for_you4 <- lm(prop_n_deaths ~ percent_m + percent_white + avg_pov+ avg_college, data = county_data)
+
+summary(a_model_for_you4)
+```
+
+
 ### Diagnostics
 
 ```{r}
@@ -103,13 +122,13 @@ We are 95% confident that the true slope value of death per thousand and poverty
 ```{r}
 outliers2 <- county_data %>%
   left_join(police_killings, by = "county_id") %>%
-  select(avg_pov, avg_urate, city, state)%>%
+  select(avg_pov, tot_pop, avg_urate, city, state)%>%
   arrange (desc(avg_pov))%>%
   head(5)
 
 outliers3 <- county_data %>%
   left_join(police_killings, by = "county_id") %>%
-  select(prop_n_deaths, avg_pov, avg_urate, city, state)%>%
+  select(prop_n_deaths, avg_pov, tot_pop, avg_urate, city, state)%>%
   arrange (desc(prop_n_deaths))%>%
   head(5)
 outliers2
@@ -135,8 +154,8 @@ We are 95% confident that the true slope value of death per thousand and unemplo
 
 ```{r}
 mod_pu <- lm(avg_pov~avg_urate, data = county_data)
-summary(mod_u)
-confint(mod_u)
+summary(mod_pu)
+confint(mod_pu)
 ```
 
 Average umployment rate is postively correlated to average poverty rate. The result is also signifant, p < 0.05. 
