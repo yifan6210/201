@@ -2,13 +2,41 @@
 title: "Technical Report"
 author: "Kendra Swanson, Yifan Ma"
 date: "4/28/2018"
-output: html_document
+output: 
+  html_document:
+    df_print: paged 
 ---
 
+```{r, include = FALSE}
+library(fivethirtyeight)
+library(tidyverse)
+library(dplyr)
+library(mosaic)
+library(ggplot2)
+data(police_killings)
+```
 
 ### Abstract
 
   Using data on killings committed by police in the first half of 2015, we studied trends in demographic information about the victim and the location in which the killing took place. We grouped the data by the county in which the killing took place. We then normalized the number of deaths by dividing deaths by the sum of the population of the tracts in which the killings took place; we multipled this number by 1000, and the resulting values represent the sample killings by police per thousand people in that county. We studied the correlation of deaths per thousand with factors including poverty rate of the county, race of the victims, number of victims who were male, average college graduation rate, and average unemployment rate. We discovered that poverty statistics for the county, average unemployment rate and race of the victim does have a statistically significant impact on predicted deaths per thousand in that county at the hands of police.
+  
+```{r}
+county_data <- police_killings %>%
+  mutate(g = ifelse(gender == "Male", 1, 0),
+         w = ifelse(raceethnicity == "White", 1,0)) %>%
+  group_by(county_id) %>%
+  summarise(n_deaths = n(),
+            tot_pop = sum(pop, na.rm=TRUE), 
+            n_male = sum(g),
+            n_white = sum(w, na.rm=TRUE),
+            avg_pov = mean(pov, na.rm=TRUE),
+            avg_urate = mean(urate, na.rm=TRUE),
+            avg_college = mean(college, na.rm=TRUE)) %>%
+  mutate(percent_m = n_male/n_deaths, 
+         prop_n_deaths = n_deaths/tot_pop*1000,
+         percent_white = n_white/n_deaths)
+head(county_data, 10)
+```
 
 
 ### Introduction
@@ -25,14 +53,49 @@ output: html_document
 
 ### Results:
 
-  In our multiple regression model, we examined five variables, percentage of those victims who were men, percentage of those victims who were white, average poverty rate for the county, average unemployment rate, and average college graduation rate. Among those demographic factors in the counties, we found that for every one percent increase in average poverty rate in the county, we would predict a 3 percent increase in death per thousand people in that county, holding all other variable constant. Similarly, we found that every one percent increase in unemployment rate in the county, we would predict a 41 percent increase in death per thousand people in that county, holding all other variable constant. Other explanatory variables in the multiple regression also slightly correlates with our response variable, death per thousand, however, we found no evidence that those correlation is significant. WHITE?
-  We also checked the conditions for this regression model. Independence was assumed since each county and the people who was killed by police should be individual cases. Linearity of the model is acceptable since in the residuals vs. fitted model, the line is fairly horizontal and straight. Equal variance of the model could not be guaranteed since the plot does thicken. At last, from the QQ plot, normality of the residuals is also not satisfied, there are outliers that are obviously separated from the general trend.
+  In our multiple regression model, our response variable was death per thousand in the unit of a county. We examined five explanatory variables, percentage of those victims who were men, percentage of those victims who were white, average poverty rate for the county, average unemployment rate, and average college graduation rate.
+  
+```{r}
+model1 <- lm(prop_n_deaths ~ percent_m + percent_white + avg_pov + avg_urate + avg_college, data = county_data)
+
+summary(model1)
+```
+  
+  Among those demographic factors in the counties, we found two response variables with correlations that were significant, average poverty rate (b = .0033, p < .05) and average employment rate (b = .41, p < .05). Therefore, we predict that for every one percent increase in average poverty rate in the county, we would predict a .3 percent increase in death per thousand people in that county, holding all other variable constant. Similarly, we found that for every one percent increase in unemployment rate in the county, we would predict a 41 percent increase in death per thousand people in that county, holding all other variable constant.
+  Other explanatory variables in the multiple regression also slightly correlates with death per thousand, however, we found no evidence that those correlations were significant. 
+  We ran diagnostics on the model to ensure that it satisfy the LINE conditions. In order to run the multiple regression model, Independence was assumed, however, it remained as an assumption. Linearity of the model is acceptable since in the residual vs. fitted model, the line is fairly horizontal and straight. Equal variance of the model could not be guaranteed since the plot does thicken by outliers. At last, from the QQ plot, normality of the residuals is also not satisfied, there are outliers that are obviously separated from the general trend.
+  
+```{r}
+plot(model1, which  = c(1:2))
+```
 
 ### Conclusion:
 
-  We examined demographic factors that contribute to death per thousand by police in each county during the first six months of 2015. Of all factors, average poverty rate and unemployment rate positively correlated with death per thousand. There is also a strong positive association between the average poverty rate and the unemployment rate, which explains why both factors contribute to our response variable in a similar manner. 
-  The county data set that we used for the study has 300 observations with 12 variables, although it does not seem to be a small data set, a good portion of the  counties only had one or two deaths in the first six months of 2015. Due to the  smaller number of death recorded, we had to times death/population by 1000 so the statistics was not as small. The lower number of death in each individual county also created outliers. We observe outliers when examining correlations between…
-One possible solution to the problems described above is to web scrap the police killing data and manually join other data from census to include more variables. Therefore, there will be more cases of death by policy killing per county and the analysis will be more meaningful.
-  One other limitation of our data is that county’s identity could not be verify. One of the variables in the data frame contains county id, however, the id does not match any ids we examined through other online sources. As a result, when researching the outliers in the data set, only general statement about the city that the county resides could be analyzed. 
+  We examined demographic factors that contribute to death per thousand by police in each county during the first six months of 2015. Of all factors, average poverty rate and unemployment rate positively correlated with death per thousand. There was also a strong positive association between the average poverty rate and the unemployment rate. We ran the model again excluding either the average poverty rate or the unemployment rate and we found that percentage of those victims who were white became a significant explanatory variable (b = -.038, p < .05) while all other coefficient remained approximately the same. We predict that for every one percent increase in percentage of those victims who were white in the county, we would predict a decrease of 3.8 percent drop in death per thousand. 
+  
+```{r}
+model2 <- lm(prop_n_deaths ~avg_pov + avg_urate, data = county_data)
+
+summary(model2)
+```
+
+```{r}
+model3 <- lm(prop_n_deaths ~ percent_m + percent_white + avg_urate + avg_college, data = county_data)
+
+summary(model3)
+```
+  
+  The county data set that we used for the study has 300 observations with 12 variables, although it does not seem to be a small data set, a good portion of the  counties only had one or two deaths in the first six months of 2015. Due to the  smaller number of death recorded, we had to times death/population by 1000 so the statistics was not as small. The lower number of death in each individual county also created outliers. A county in the city Honolulu stood out as an outlier despite the normal average poverty rate and unemployment rate because the fact that it had a small population (N = 731), thus, with one death in the first half of 2015 still created a high death per thousand 1.37%. 
+  
+```{r}
+county_data %>%
+  left_join(police_killings, by = "county_id") %>%
+  select(prop_n_deaths, avg_pov, tot_pop, avg_urate, city, state)%>%
+  arrange (desc(prop_n_deaths))%>%
+  head(5)
+```
+  
+In order to mean the statistics more meaningful, we could choose to exclude some outliers or to web scrape the rest of the police killing data from The Guardian and manually join other data from census to include more variables. Therefore, there will be more cases of death by police killing per county which will allow more statistical analysis.
+  One other limitation of our data is that county’s identity could not be verified. One of the variables in the data frame contains county id, however, the id does not match any other ids we examined through online sources. We traced back to the github source for the fivethirtyeight package and the id was only listed as combined id code.  As a result, when researching the outliers in the data set, only general statement about the city that the county resides could be analyzed. No map visualizations could be done due to the same reason.
 
 

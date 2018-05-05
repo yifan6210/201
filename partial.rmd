@@ -2,7 +2,9 @@
 title: "Analysis by County"
 author: "Kendra Swanson, Yifan Ma"
 date: "4/27/2018"
-output: html_document
+output: 
+  html_document:
+    df_print: paged 
 ---
 
 ```{r, include = FALSE}
@@ -33,21 +35,21 @@ head(county_data, 10)
 ```
 
 ```{r}
-a_model_for_you <- lm(prop_n_deaths ~ percent_m + percent_white + avg_pov + avg_urate + avg_college, data = county_data)
+model1 <- lm(prop_n_deaths ~ percent_m + percent_white + avg_pov + avg_urate + avg_college, data = county_data)
 
-summary(a_model_for_you)
+summary(model1)
 ```
 
 ```{r}
-a_model_for_you2 <- lm(prop_n_deaths ~avg_pov + avg_urate, data = county_data)
+model2 <- lm(prop_n_deaths ~avg_pov + avg_urate, data = county_data)
 
-summary(a_model_for_you2)
+summary(model2)
 ```
 
 ```{r}
-a_model_for_you3 <- lm(prop_n_deaths ~ percent_m + percent_white + avg_urate + avg_college, data = county_data)
+model3 <- lm(prop_n_deaths ~ percent_m + percent_white + avg_urate + avg_college, data = county_data)
 
-summary(a_model_for_you3)
+summary(model3)
 ```
 
 ```{r}
@@ -60,7 +62,7 @@ summary(a_model_for_you4)
 ### Diagnostics
 
 ```{r}
-plot(a_model_for_you)
+plot(model1, which  = c(1:2))
 ```
 
 ### Bivariate scatterplots
