@@ -18,7 +18,7 @@ data(police_killings)
 
 ### Abstract
 
-  Using data on killings committed by police in the first half of 2015, we studied trends in demographic information about the victim and the location in which the killing took place. We grouped the data by the county in which the killing took place. We then normalized the number of deaths by dividing deaths by the sum of the population of the tracts in which the killings took place; we multipled this number by 1000, and the resulting values represent the sample killings by police per thousand people in that county. We studied the correlation of deaths per thousand with factors including poverty rate of the county, race of the victims, number of victims who were male, average college graduation rate, and average unemployment rate. We discovered that poverty statistics for the county, average unemployment rate and race of the victim does have a statistically significant impact on predicted deaths per thousand in that county at the hands of police.
+  Using data on killings committed by police in the first half of 2015, we studied trends in demographic information about the victim and the location in which the killing took place. We grouped the data by the county in which the killing took place. We then normalized the number of deaths by dividing deaths by the sum of the population of the tracts in which the killings occurred; we multipled this number by 1000, and the resulting values represent the sample killings by police per thousand people in that county. We studied the correlation of deaths per thousand with factors including poverty rate of the county, race of the victims, number of victims who were male, average college graduation rate, and average unemployment rate. We discovered that poverty statistics for the county, average unemployment rate and race of the victim does have a statistically significant impact on predicted deaths per thousand in that county at the hands of police.
   
 ```{r}
 county_data <- police_killings %>%
@@ -41,14 +41,21 @@ head(county_data, 10)
 
 ### Introduction
   
-  In 2014, the killings of Michael Brown and Eric Garner at the hands of police officers brought conversation about police violence into the national spotlight. Since then, there has been an increased interest in answering questions about the use of deadly force by police officers, as well as about racial bias in policing. Our question is, what demographic factors are correlated with who was killed by police in the first six months of 2015? We created a regression model which mapped deaths per thousand in a county to percentage of those victims who were men, percentage of those victims who were white, average poverty rate for the county, average unemployment rate, and average college graduation rate.
-  We discovered that the strongest correlation existed between poverty rate and deaths per thousand. As poverty rate increases in a county, so do the deaths at the hands of police; the amount of variance explained by this value, however, is low. We also investigated patterns in race of the victims, and found certain statistically significant values that suggested the killings of non-white individuals in greater density than white individuals. Finally, we investigated a number of outlying counties with uncommonly high death rates, and found ____.
+  In 2014, the killings of Michael Brown and Eric Garner at the hands of police officers brought conversation about police violence into the national spotlight. Since then, there has been an increased interest in answering questions about the use of deadly force by police officers, as well as about racial bias in policing. We want to investigate these claims in order to corroborate them or refute them with trustworthy statistics. Our question is, what demographic factors are correlated with who was killed by police in the first six months of 2015? 
+  
+  We created a regression model which mapped deaths per thousand in a county to percentage of those victims who were men, percentage of those victims who were white, average poverty rate for the county, average unemployment rate, and average college graduation rate.
+  
+  We discovered that the strongest correlation existed between poverty rate and deaths per thousand. As poverty rate increases in a county, so do the deaths at the hands of police; the amount of variance explained by this value, however, is low. 
+  
+  We also investigated patterns in race of the victims, looking for evidence of race bias. However, the data set was limited, not providing enough information on the race breakdown for the county as a whole, and providing no information on counties in which no killings took place. In order to find meaningful evidence about race bias in policing, we would have needed to find evidence that people of color were being targeted out of proportion to the population demographics of the county, and we lacked the full scope of that demographic information.
+  
   Our analysis confirms some of the conversation around race and class bias in the police force. However, it should be noted that most of the variation in data is not explained by these factors. 
   
 
 ### The Data
   
   The data we used originates from a combination of census data and a set of data published in The Guardian called The Counted. The Counted is a crowdsourced record seeking to understand the full scope of police violence in the United States. Its cases are individuals who died at the hands of police officers, and it records the race, gender, and age of the individual, the location of the death, whether the victim was armed, and other case-specific information. Census data was used to determine the poverty rate in the area in which the death took place, as well as the unemployment rate, college graduation rate, and many other factors. The joining of this data was performed by fivethirtyeight.com.
+  
   We further modified the data to group by county. The cases we used were counties in which police killings took place in the first six months of 2015. We used population data to estimate a sample value for deaths per thousand in each of these counties, and attempted to create a model predicting this value using the other census and case-specific variables.
 
 ### Results:
@@ -62,6 +69,7 @@ summary(model1)
 ```
   
   Among those demographic factors in the counties, we found two response variables with correlations that were significant, average poverty rate (b = .0033, p < .05) and average employment rate (b = .41, p < .05). Therefore, we predict that for every one percent increase in average poverty rate in the county, we would predict a .3 percent increase in death per thousand people in that county, holding all other variable constant. Similarly, we found that for every one percent increase in unemployment rate in the county, we would predict a 41 percent increase in death per thousand people in that county, holding all other variable constant.
+  
   Other explanatory variables in the multiple regression also slightly correlates with death per thousand, however, we found no evidence that those correlations were significant. 
   We ran diagnostics on the model to ensure that it satisfy the LINE conditions. In order to run the multiple regression model, Independence was assumed, however, it remained as an assumption. Linearity of the model is acceptable since in the residual vs. fitted model, the line is fairly horizontal and straight. Equal variance of the model could not be guaranteed since the plot does thicken by outliers. At last, from the QQ plot, normality of the residuals is also not satisfied, there are outliers that are obviously separated from the general trend.
   
@@ -96,6 +104,7 @@ county_data %>%
 ```
   
 In order to mean the statistics more meaningful, we could choose to exclude some outliers or to web scrape the rest of the police killing data from The Guardian and manually join other data from census to include more variables. Therefore, there will be more cases of death by police killing per county which will allow more statistical analysis.
+
   One other limitation of our data is that county’s identity could not be verified. One of the variables in the data frame contains county id, however, the id does not match any other ids we examined through online sources. We traced back to the github source for the fivethirtyeight package and the id was only listed as combined id code.  As a result, when researching the outliers in the data set, only general statement about the city that the county resides could be analyzed. No map visualizations could be done due to the same reason.
 
 
